@@ -2,24 +2,25 @@
 using System.Threading.Tasks;
 using RevStack.Mvc;
 using RevStack.Notification;
+using RevStack.Configuration;
 
 namespace RevStack.Commerce.Mvc
 {
     public class UserAlertMessageService<TKey> : IUserAlertMessageService<TKey>
     {
-        public UserAlertMessage<TKey> Get(NotifyAlert<TKey> entity, UriUtility uri)
+        public AlertMessage<TKey> Get(NotifyAlert<TKey> entity, UriUtility uri)
         {
             var host = uri.Host;
-            var logoUrl = Settings.CompanyLogoUrl;
+            var logoUrl = Company.LogoUrl;
             if (logoUrl.IndexOf("http") != 0) logoUrl = host + logoUrl;
             string trackingLabel = "Sign Up";
-            string trackingUrl = Settings.UserSignUpAction;
+            string trackingUrl = User.SignUpAction;
             if(entity.IsAuthenticated)
             {
                 trackingLabel = "Sign In";
-                trackingUrl = Settings.UserSignInAction;
+                trackingUrl = User.SignInAction;
             }
-            var result = new UserAlertMessage<TKey>
+            var result = new AlertMessage<TKey>
             {
                 Id=entity.Id,
                 IsAuthenticated =entity.IsAuthenticated,
@@ -30,12 +31,12 @@ namespace RevStack.Commerce.Mvc
                 Day = DateTime.Now.DayOfWeek.ToString(),
                 TrackingUrl =host + trackingUrl,
                 TrackingLabel =trackingLabel,
-                Company = Settings.Company,
-                CompanyAddress = Settings.CompanyAddress,
-                CompanyPhone = Settings.CompanyPhone,
+                Company = Company.Name,
+                CompanyAddress = Company.Address,
+                CompanyPhone = Company.Phone,
                 CompanyLogoUrl = logoUrl,
-                CssHightlightColor = Settings.HtmlHighlightColor,
-                CssLinkColor = Settings.HtmlLinkColor,
+                CssHightlightColor = Html.HighlightColor,
+                CssLinkColor = Html.LinkColor,
                 Key = entity.Key,
                 Value = entity.Value
             };
@@ -43,7 +44,7 @@ namespace RevStack.Commerce.Mvc
             return result;
         }
 
-        public Task<UserAlertMessage<TKey>> GetAsync(NotifyAlert<TKey> entity, UriUtility uri)
+        public Task<AlertMessage<TKey>> GetAsync(NotifyAlert<TKey> entity, UriUtility uri)
         {
             return Task.FromResult(Get(entity, uri));
         }

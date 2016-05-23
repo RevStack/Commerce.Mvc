@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using RevStack.Configuration;
 
 namespace RevStack.Commerce.Mvc
 {
@@ -111,7 +112,7 @@ namespace RevStack.Commerce.Mvc
             var items = bag.DiscountItems.Where(x => x.RuleType == RuleType.Subtotal);
             if (items.Any())
             {
-                return new Tuple<bool, string>(false, "A similar type " + Settings.PromotionLabel + " discount has already been applied");
+                return new Tuple<bool, string>(false, "A similar type " + Promotion.Label + " discount has already been applied");
             }
             else
             {
@@ -186,7 +187,7 @@ namespace RevStack.Commerce.Mvc
             var items = bag.DiscountItems.Where(x => x.RuleType == RuleType.Subtotal);
             if (items.Any())
             {
-                return new Tuple<bool, string>(false, "A similar type " + Settings.PromotionLabel + " discount has already been applied");
+                return new Tuple<bool, string>(false, "A similar type " + Promotion.Label + " discount has already been applied");
             }
             else
             {

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using RevStack.Mvc;
 using RevStack.Pattern;
 using RevStack.Notification;
+using RevStack.Configuration;
 
 namespace RevStack.Commerce.Mvc
 {
@@ -25,7 +26,7 @@ namespace RevStack.Commerce.Mvc
             if (order == null) return null;
             DateTime date = Convert.ToDateTime(entity.Date);
             var host = uri.Host;
-            var logoUrl = Settings.CompanyLogoUrl;
+            var logoUrl = Company.LogoUrl;
             if (logoUrl.IndexOf("http") != 0) logoUrl = host + logoUrl;
             var count = order.Items.Count();
             string itemText = "";
@@ -43,18 +44,18 @@ namespace RevStack.Commerce.Mvc
                 ItemCount = order.Items.Count(),
                 MainItem = order.Items.FirstOrDefault().Name,
                 ItemText = itemText,
-                ShipMessage = Settings.OrderEmailShipMessage,
+                ShipMessage = Order.EmailShipMessage,
                 Email = order.Email,
                 Total = order.Total.ToString("C"),
                 Day = date.DayOfWeek.ToString(),
                 Date = DateTime.Now,
                 TrackingUrl = host + order.TrackingUrl,
-                Company = Settings.Company,
-                CompanyAddress = Settings.CompanyAddress,
-                CompanyPhone = Settings.CompanyPhone,
+                Company = Company.Name,
+                CompanyAddress = Company.Address,
+                CompanyPhone = Company.Phone,
                 CompanyLogoUrl = logoUrl,
-                CssHightlightColor = Settings.HtmlHighlightColor,
-                CssLinkColor = Settings.HtmlLinkColor,
+                CssHightlightColor = Html.HighlightColor,
+                CssLinkColor = Html.LinkColor,
                 Key =entity.Key,
                 Value=entity.Value
             };

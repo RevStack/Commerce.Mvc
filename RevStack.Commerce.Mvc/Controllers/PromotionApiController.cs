@@ -6,6 +6,7 @@ using System.Web;
 using Microsoft.AspNet.Identity;
 using RevStack.Mvc;
 using RevStack.Pattern;
+using RevStack.Configuration;
 
 namespace RevStack.Commerce.Mvc
 {
@@ -29,7 +30,7 @@ namespace RevStack.Commerce.Mvc
             var discount = discounts.Where(x => x.Code.ToLower() == code.ToLower()).FirstOrDefault();
             if (discount == null)
             {
-                return new ContentErrorResult(Request, Settings.PromotionInvalidMessage);
+                return new ContentErrorResult(Request, Promotion.InvalidMessage);
             }
 
             //validate discount

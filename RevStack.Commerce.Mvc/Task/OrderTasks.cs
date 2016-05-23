@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using RevStack.Configuration;
 
 namespace RevStack.Commerce.Mvc
 {
@@ -18,12 +18,12 @@ namespace RevStack.Commerce.Mvc
             if (isAuthenticated)
             {
                 transaction.Order.IsAuthenticatedUser = true;
-                transaction.Order.TrackingUrl = Settings.OrderTrackingAction + "/" + transaction.Order.Id;
+                transaction.Order.TrackingUrl = Order.TrackingAction + "/" + transaction.Order.Id;
             }
             else
             {
                 transaction.Order.IsAuthenticatedUser = false;
-                transaction.Order.TrackingUrl = Settings.OrderTrackingUnauthenticatedAction + "/" + transaction.Order.Id;
+                transaction.Order.TrackingUrl = Order.TrackingUnauthenticatedAction + "/" + transaction.Order.Id;
             }
 
             transaction.Order.OrderStatus = new OrderStatus
@@ -34,8 +34,8 @@ namespace RevStack.Commerce.Mvc
                   new OrderNotification
                   {
                     Date = DateTime.Now,
-                    Key = Settings.OrderConfirmationAlertKey,
-                    Value = Settings.OrderConfirmationAlertValue
+                    Key = Order.ConfirmationAlertKey,
+                    Value = Order.ConfirmationAlertValue
                   }
                }
             };

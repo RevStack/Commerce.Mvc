@@ -61,6 +61,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>\\Mac\Home\Documents\Development\mono\RevStack\updated\RevStack.Commerce\RevStack.Commerce\bin\Release\RevStack.Commerce.dll</HintPath>
     </Reference>
+    <Reference Include="RevStack.Configuration">
+      <HintPath>..\..\RevStack.Configuration\RevStack.Configuration\bin\Release\RevStack.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="RevStack.Identity">
       <HintPath>\\Mac\Home\Documents\Development\mono\RevStack\updated\RevStack.Identity\RevStack.Identity\bin\Release\RevStack.Identity.dll</HintPath>
     </Reference>
@@ -123,7 +126,6 @@
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Task\DiscountTaskList.cs" />
     <Compile Include="Task\DiscountTasks.cs" />
-    <Compile Include="Task\NotifyTask.cs" />
     <Compile Include="Task\NotifyTaskList.cs" />
     <Compile Include="Task\NotifyTasks.cs" />
     <Compile Include="Task\OrderTask.cs" />

@@ -5,12 +5,14 @@ using RevStack.Notification;
 
 namespace RevStack.Commerce.Mvc
 {
-    public class DefaultNotifyTaskList<TKey> : INotifyTaskList<TKey>
+    public class CommerceNotifyTaskList<TKey> : INotifyTaskList<TKey>
     {
         protected readonly IIdentityEmailService _service;
-        public DefaultNotifyTaskList(IIdentityEmailService service)
+        protected readonly IIdentitySmsService _smsService;
+        public CommerceNotifyTaskList(IIdentityEmailService service, IIdentitySmsService smsService)
         {
-            _service = service;   
+            _service = service;
+            _smsService = smsService;
         }
 
         public virtual List<INotifyTask<TKey>> Tasks
@@ -18,11 +20,11 @@ namespace RevStack.Commerce.Mvc
             get
             {
                 var list = new List<INotifyTask<TKey>>();
-                var item = new NotifyOrderEmailTask<TKey>(_service);
-                var item2 = new NotifyOrderAlertTask<TKey>(_service);
-                var item3 = new NotifyUserAlertTask<TKey>(_service);
-                var item4 = new NotifyUserSignUpTask<TKey>(_service);
-                var item5 = new NotifyOrderAdminTask<TKey>(_service);
+                var item = new NotifyOrderEmailTask<TKey>(_service,_smsService);
+                var item2 = new NotifyOrderAlertTask<TKey>(_service,_smsService);
+                var item3 = new NotifyUserAlertTask<TKey>(_service,_smsService);
+                var item4 = new NotifyUserSignUpTask<TKey>(_service,_smsService);
+                var item5 = new NotifyOrderAdminTask<TKey>(_service,_smsService);
                 list.Add(item);
                 list.Add(item2);
                 list.Add(item3);

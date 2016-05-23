@@ -5,13 +5,14 @@ using Microsoft.AspNet.Identity;
 using RevStack.Identity;
 using RevStack.Net;
 using RevStack.Notification;
+using RevStack.Configuration;
 
 namespace RevStack.Commerce.Mvc
 {
     
-    public class NotifyOrderEmailTask<TKey> : NotifyBaseTask<TKey>
+    public class NotifyOrderEmailTask<TKey> : NotifyTask<TKey>
     {
-        public NotifyOrderEmailTask(IIdentityEmailService service) : base(service)
+        public NotifyOrderEmailTask(IIdentityEmailService service,IIdentitySmsService smsService) : base(service,smsService)
         {
             TaskType = NotifyTaskType.OrderConfirmation;
         }
@@ -19,23 +20,23 @@ namespace RevStack.Commerce.Mvc
         public async override Task<bool> RunAsync(INotify<TKey> entity)
         {
             var id = entity.Id;
-            var url = BaseUrl + Settings.OrderEmailAction + "/" + id.ToString();
+            var url = BaseUrl + Order.EmailAction + "/" + id.ToString();
             string page = Http.Get(url);
             var message = new IdentityMessage
             {
                 Body = page,
                 Destination = entity.Email,
-                Subject = Settings.OrderEmailSubject
+                Subject = Order.EmailSubject
             };
 
-            await _service.SendAsync(message, Settings.CompanyNotificationEmail, true);
+            await _service.SendAsync(message, Company.NotificationEmail, true);
             return true;
         }
     }
 
-    public class NotifyOrderAlertTask<TKey> : NotifyBaseTask<TKey>
+    public class NotifyOrderAlertTask<TKey> : NotifyTask<TKey>
     {
-        public NotifyOrderAlertTask(IIdentityEmailService service) : base(service)
+        public NotifyOrderAlertTask(IIdentityEmailService service, IIdentitySmsService smsService) : base(service,smsService)
         {
             TaskType = NotifyTaskType.OrderAlert;
         }
@@ -43,73 +44,23 @@ namespace RevStack.Commerce.Mvc
         public async override Task<bool> RunAsync(INotify<TKey> entity)
         {
             var id = entity.Id;
-            var url = BaseUrl + Settings.OrderNotificationAction + "/?id=" + id.ToString() + "&key=" + HttpUtility.UrlEncode(entity.Key) + "&value=" + HttpUtility.UrlEncode(entity.Value);
+            var url = BaseUrl + Order.NotificationAction + "/?id=" + id.ToString() + "&key=" + HttpUtility.UrlEncode(entity.Key) + "&value=" + HttpUtility.UrlEncode(entity.Value);
             string page = Http.Get(url);
             var message = new IdentityMessage
             {
                 Body = page,
                 Destination = entity.Email,
-                Subject = "Order #" + id.ToString() + " " + Settings.OrderNotificationLabel + " for " + entity.Name
+                Subject = "Order #" + id.ToString() + " " + Order.NotificationLabel + " for " + entity.Name
             };
 
-            await _service.SendAsync(message, Settings.CompanyNotificationEmail, true);
+            await _service.SendAsync(message, Company.NotificationEmail, true);
             return true;
         }
     }
 
-    public class NotifyUserAlertTask<TKey> : NotifyBaseTask<TKey>
+    public class NotifyOrderAdminTask<TKey> : NotifyTask<TKey>
     {
-        public NotifyUserAlertTask(IIdentityEmailService service) : base(service)
-        {
-            TaskType = NotifyTaskType.UserAlert;
-        }
-
-        public async override Task<bool> RunAsync(INotify<TKey> entity)
-        {
-            var id = entity.Id;
-            var url = BaseUrl + Settings.UserNotificationAction + "/?id=" + id.ToString() + "&key=" + HttpUtility.UrlEncode(entity.Key) 
-                + "&value=" + HttpUtility.UrlEncode(entity.Value) + "&authenticated=" + entity.IsAuthenticated + "&name=" + HttpUtility.UrlEncode(entity.Name);
-            string page = Http.Get(url);
-            var message = new IdentityMessage
-            {
-                Body = page,
-                Destination = entity.Email,
-                Subject = Settings.Company + " " + Settings.UserNotificationLabel + " for " + entity.Name
-            };
-
-            await  _service.SendAsync(message, Settings.CompanyNotificationEmail, true);
-            return true;
-        }
-    }
-
-    public class NotifyUserSignUpTask<TKey> : NotifyBaseTask<TKey>
-    {
-        public NotifyUserSignUpTask(IIdentityEmailService service) : base(service)
-        {
-            TaskType = NotifyTaskType.UserSignUp;
-        }
-
-        public async override Task<bool> RunAsync(INotify<TKey> entity)
-        {
-            var id = entity.Id;
-            var url = BaseUrl + Settings.UserNotificationAction + "/?id=" + id.ToString() + "&key=" + HttpUtility.UrlEncode(entity.Key)
-                + "&value=" + HttpUtility.UrlEncode(entity.Value) + "&authenticated=" + entity.IsAuthenticated + "&name=" + HttpUtility.UrlEncode(entity.Name);
-            string page = Http.Get(url);
-            var message = new IdentityMessage
-            {
-                Body = page,
-                Destination = entity.Email,
-                Subject = Settings.Company + " user registration confirmation for " + entity.Name
-            };
-
-            await _service.SendAsync(message, Settings.CompanyNotificationEmail, true);
-            return true;
-        }
-    }
-
-    public class NotifyOrderAdminTask<TKey> : NotifyBaseTask<TKey>
-    {
-        public NotifyOrderAdminTask(IIdentityEmailService service) : base(service)
+        public NotifyOrderAdminTask(IIdentityEmailService service, IIdentitySmsService smsService) : base(service,smsService)
         {
             TaskType = NotifyTaskType.AdminAlert;
         }
@@ -125,11 +76,11 @@ namespace RevStack.Commerce.Mvc
             var message = new IdentityMessage
             {
                 Body = body,
-                Destination = Settings.CompanyNotificationRecipientEmail,
-                Subject = "New " + Settings.Company + " order from " + entity.Name
+                Destination = Company.NotificationRecipientEmail,
+                Subject = "New " + Company.Name + " order from " + entity.Name
             };
 
-            await _service.SendAsync(message, Settings.CompanyNotificationEmail, true);
+            await _service.SendAsync(message, Company.NotificationEmail, true);
             return true;
         }
     }
