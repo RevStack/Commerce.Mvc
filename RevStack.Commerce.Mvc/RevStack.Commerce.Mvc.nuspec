@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>RevStack.Commerce.Mvc</id>
+    <version>1.0.2</version>
+    <title>RevStack.Comerce.Mvc</title>
+    <authors>Scott Francis, MIS Interactive</authors>
+    <owners>D. Sheets, S. Francis</owners>
+    <licenseUrl>https://github.com/RevStack/Commerce.Mvc/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/RevStack/Commerce.Mvc.git</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Mvc class library implementation of the RevStack.Commerce abstraction</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>RevStack Commerce Mvc</tags>
+  </metadata>
+</package>

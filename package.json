@@ -1,7 +1,7 @@
 {
   "name": "RevStack.Commerce.Mvc",
-  "version": "1.0.0",
-  "description": "Mvc class library implementation of the RevStack.commerce abstraction",
+  "version": "1.0.2",
+  "description": "Mvc class library implementation of the RevStack.Commerce abstraction",
   "main": "RevStack.Commerce.Mvc.sln",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
